@@ -33,7 +33,7 @@ export default function StationList({ train, onClose }: StationListProps) {
   const nextStationIndex = stations.findIndex(station => !station.isPassed);
 
   return (
-    <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg max-h-[80vh] w-[280px] flex flex-col border border-white/20">
+    <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg max-h-[80vh] w-[280px] md:w-[380px] flex flex-col border border-white/20">
       {/* Sticky Header */}
       <div className="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 border-b border-gray-100 rounded-t-xl z-10">
         <div className="flex justify-between items-center">

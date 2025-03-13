@@ -42,7 +42,7 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="w-full h-[600px] relative">
+    <div className="w-full h-[80vh] relative">
       <div className="absolute top-4 right-4 z-[1000]">
         <button
           onClick={refreshTrains}
@@ -64,16 +64,6 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
-        {/* City markers */}
-        {Object.entries(GERMAN_CITIES).map(([cityName, coordinates]) => (
-          <CityMarker 
-            key={`city-${cityName}`} 
-            name={cityName}
-            position={[coordinates[1], coordinates[0]]}
-          />
-        ))}
-        
         {/* Train markers */}
         {trains.map(train => (
           <TrainMarker key={train.id} train={train} />

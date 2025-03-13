@@ -24,9 +24,9 @@ export default function TrainMarker({ train }: TrainMarkerProps) {
       html: `
         <div style="display: flex; flex-direction: column; align-items: center;">
           <div class="${colorClass}" style="width: 28px; height: 28px; border-radius: 9999px; border: 2px solid white; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-            ${train.type.charAt(0)}
+            ${train.type}
           </div>
-          <div style="font-size: 0.75rem; font-weight: 600; background: white; padding: 0 4px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">${train.trainNumber.split(' ')[1]}</div>
+          <div style="font-size: 0.75rem; color: gray; font-weight: 600; background: white; padding: 0 4px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">${train.trainNumber.split(' ')[1]}</div>
         </div>
       `,
       iconSize: [30, 42],

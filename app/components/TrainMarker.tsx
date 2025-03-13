@@ -21,7 +21,6 @@ export default function TrainMarker({ train, onTrainSelect, isSelected = false }
     };
     
     const colorClass = getColorClass();
-    const delayText = train.status.isDelayed ? `+${train.status.delayMinutes}m` : '';
     const borderStyle = isSelected ? '3px solid #3b82f6' : '2px solid white';
     
     return L.divIcon({
@@ -36,8 +35,9 @@ export default function TrainMarker({ train, onTrainSelect, isSelected = false }
           </div>
         </div>
       `,
-      iconSize: [40, 75],
-      iconAnchor: [20, 75],
+      iconSize: [40, 48],
+      iconAnchor: [20, 48],
+      popupAnchor: [0, -50],
     });
   };
 

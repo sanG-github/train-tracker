@@ -96,10 +96,10 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="w-full h-[80vh] relative flex">
+    <div className="w-full h-[80vh] relative flex font-sans">
       {/* Station list sidebar */}
       {selectedTrain && (
-        <div className="absolute top-0 left-0 h-full z-[1001] p-4">
+        <div className="absolute top-4 left-4 h-[calc(100%-2rem)] z-[1001]">
           <StationList train={selectedTrain} onClose={handleCloseSidebar} />
         </div>
       )}
@@ -107,19 +107,19 @@ export default function Map() {
       <div className="absolute top-4 right-4 z-[1000]">
         <button
           onClick={refreshTrains}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition-colors flex items-center"
+          className="bg-white/80 backdrop-blur-md hover:bg-white/90 text-gray-800 px-6 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center border border-white/20 hover:shadow-xl hover:scale-105 active:scale-95"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          Refresh Data
+          <span className="font-medium cursor-pointer">Refresh Data</span>
         </button>
       </div>
       
       <MapContainer
         center={MAP_CENTER}
         zoom={MAP_ZOOM}
-        className="w-full h-full"
+        className="w-full h-full rounded-2xl shadow-2xl overflow-hidden"
       >
         <MapController onMapReady={handleMapReady} />
         <TileLayer
@@ -138,19 +138,21 @@ export default function Map() {
       </MapContainer>
       
       {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-white p-3 rounded-lg shadow-md z-[1000] text-black">
-        <div className="text-sm font-semibold mb-2">Train Status</div>
-        <div className="flex items-center space-x-2 mb-1">
-          <div className="w-4 h-4 rounded-full bg-green-500"></div>
-          <div className="text-xs">On Time</div>
-        </div>
-        <div className="flex items-center space-x-2 mb-1">
-          <div className="w-4 h-4 rounded-full bg-orange-500"></div>
-          <div className="text-xs">Delayed &lt;15 min</div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 rounded-full bg-red-500"></div>
-          <div className="text-xs">Delayed &gt;15 min</div>
+      <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-lg z-[1000] text-gray-800 border border-white/20">
+        <div className="text-sm font-semibold mb-3 text-gray-900">Train Status</div>
+        <div className="flex flex-col space-y-2.5">
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></div>
+            <div className="text-xs font-medium">On Time</div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
+            <div className="text-xs font-medium">Delayed &lt;15 min</div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50"></div>
+            <div className="text-xs font-medium">Delayed &gt;15 min</div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import { useMap } from 'react-leaflet/hooks';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { GERMAN_CITIES, MAP_CENTER, MAP_ZOOM, Train } from '../types/map';
@@ -22,9 +23,21 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+// Component to handle map interactions
+function MapController({ onMapReady }: { onMapReady: (map: L.Map) => void }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    onMapReady(map);
+  }, [map, onMapReady]);
+  
+  return null;
+}
+
 export default function Map() {
   const [trains, setTrains] = useState<Train[]>(mockTrains);
   const [selectedTrain, setSelectedTrain] = useState<Train | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   const refreshTrains = () => {
     // Generate new mock train data
@@ -34,11 +47,41 @@ export default function Map() {
   };
 
   const handleTrainSelect = useCallback((train: Train) => {
-    setSelectedTrain(prev => prev?.id === train.id ? null : train);
+    setSelectedTrain(prev => {
+      const isDeselecting = prev?.id === train.id;
+      
+      // If selecting a train, zoom to it
+      if (!isDeselecting && mapRef.current) {
+        mapRef.current.flyTo(
+          [train.city.coordinates[1], train.city.coordinates[0]],
+          12, // Zoom level when focusing on a train
+          {
+            duration: 1.5 // Animation duration in seconds
+          }
+        );
+      } else if (isDeselecting && mapRef.current) {
+        // When deselecting, zoom back out to default zoom
+        mapRef.current.flyTo(MAP_CENTER, MAP_ZOOM, {
+          duration: 1.5
+        });
+      }
+      
+      return isDeselecting ? null : train;
+    });
   }, []);
 
   const handleCloseSidebar = useCallback(() => {
     setSelectedTrain(null);
+    // Zoom back out when closing the sidebar
+    if (mapRef.current) {
+      mapRef.current.flyTo(MAP_CENTER, MAP_ZOOM, {
+        duration: 1.5
+      });
+    }
+  }, []);
+
+  const handleMapReady = useCallback((map: L.Map) => {
+    mapRef.current = map;
   }, []);
 
   useEffect(() => {
@@ -78,8 +121,9 @@ export default function Map() {
         zoom={MAP_ZOOM}
         className="w-full h-full"
       >
+        <MapController onMapReady={handleMapReady} />
         <TileLayer
-          attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {/* Train markers */}

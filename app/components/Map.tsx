@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
-import { useMap } from 'react-leaflet/hooks';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { GERMAN_CITIES, MAP_CENTER, MAP_ZOOM, Train } from '../types/map';
+
+import L from 'leaflet';
 import TrainMarker from './TrainMarker';
 import StationList from './StationList';
+import { useMap } from 'react-leaflet/hooks';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import { MAP_CENTER, MAP_ZOOM, Train } from '../types/map';
 import { mockTrains, generateMockTrains } from '../data/mockTrains';
 
 // Fix for default marker icons in Next.js

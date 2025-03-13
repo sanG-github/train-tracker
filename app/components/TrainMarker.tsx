@@ -1,7 +1,8 @@
 'use client';
 
-import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+
+import { Marker, Popup } from 'react-leaflet';
 import { Train } from '../types/map';
 
 interface TrainMarkerProps {
@@ -71,7 +72,7 @@ export default function TrainMarker({ train, onTrainSelect, isSelected = false }
           
           <button 
             onClick={() => onTrainSelect(train)}
-            className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-sm transition-colors"
+            className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-sm transition-colors cursor-pointer"
           >
             {isSelected ? 'Hide Station List' : 'View Details & Stations'}
           </button>

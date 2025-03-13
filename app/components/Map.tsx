@@ -97,25 +97,6 @@ export default function Map() {
 
   return (
     <div className="w-full h-[80vh] relative flex font-sans">
-      {/* Station list sidebar */}
-      {selectedTrain && (
-        <div className="absolute top-4 left-4 h-[calc(100%-2rem)] z-[1001]">
-          <StationList train={selectedTrain} onClose={handleCloseSidebar} />
-        </div>
-      )}
-      
-      <div className="absolute top-4 right-4 z-[1000]">
-        <button
-          onClick={refreshTrains}
-          className="bg-white/80 backdrop-blur-md hover:bg-white/90 text-gray-800 px-6 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center border border-white/20 hover:shadow-xl hover:scale-105 active:scale-95"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span className="font-medium cursor-pointer">Refresh Data</span>
-        </button>
-      </div>
-      
       <MapContainer
         center={MAP_CENTER}
         zoom={MAP_ZOOM}
@@ -136,6 +117,26 @@ export default function Map() {
           />
         ))}
       </MapContainer>
+
+      {/* Station list overlay */}
+      {selectedTrain && (
+        <div className="absolute left-4 top-4 bottom-4 z-[1001]">
+          <StationList train={selectedTrain} onClose={handleCloseSidebar} />
+        </div>
+      )}
+      
+      {/* Refresh button */}
+      <div className="absolute top-4 right-4 z-[1000]">
+        <button
+          onClick={refreshTrains}
+          className="bg-white/80 backdrop-blur-md hover:bg-white/90 text-gray-800 px-6 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center border border-white/20 hover:shadow-xl hover:scale-105 active:scale-95"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span className="font-medium cursor-pointer">Refresh Data</span>
+        </button>
+      </div>
       
       {/* Legend */}
       <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-lg z-[1000] text-gray-800 border border-white/20">

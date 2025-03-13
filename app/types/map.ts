@@ -25,5 +25,5 @@ export const GERMAN_CITIES: Record<string, [number, number]> = {
   Erfurt: [11.029880, 50.978650]
 };
 
-export const MAP_CENTER: [number, number] = [10.4515, 51.1657]; // Center of Germany
+export const MAP_CENTER: [number, number] = [51.1657, 10.4515]; // Center of Germany
 export const MAP_ZOOM = 6; 

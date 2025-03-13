@@ -6,9 +6,11 @@ import { Train } from '../types/map';
 
 interface TrainMarkerProps {
   train: Train;
+  onTrainSelect: (train: Train) => void;
+  isSelected?: boolean;
 }
 
-export default function TrainMarker({ train }: TrainMarkerProps) {
+export default function TrainMarker({ train, onTrainSelect, isSelected = false }: TrainMarkerProps) {
   // Create a custom icon with color based on delay status
   const getMarkerIcon = () => {
     // Get the CSS class based on delay status
@@ -18,19 +20,23 @@ export default function TrainMarker({ train }: TrainMarkerProps) {
     };
     
     const colorClass = getColorClass();
+    const delayText = train.status.isDelayed ? `+${train.status.delayMinutes}m` : '';
+    const borderStyle = isSelected ? '3px solid #3b82f6' : '2px solid white';
     
     return L.divIcon({
       className: 'custom-train-marker',
       html: `
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="${colorClass}" style="width: 28px; height: 28px; border-radius: 9999px; border: 2px solid white; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-            ${train.type}
+        <div style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+          <div class="${colorClass}" style="width: 30px; height: 30px; border-radius: 9999px; border: ${borderStyle}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+          ${train.trainNumber.split(' ')[1]}
           </div>
-          <div style="font-size: 0.75rem; color: gray; font-weight: 600; background: white; padding: 0 4px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">${train.trainNumber.split(' ')[1]}</div>
+          <div style="font-size: 0.65rem; color: #4B5563; background: white; padding: 0 4px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-top: 1px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;">
+            ${train.city.name}
+          </div>
         </div>
       `,
-      iconSize: [30, 42],
-      iconAnchor: [15, 42],
+      iconSize: [40, 75],
+      iconAnchor: [20, 75],
     });
   };
 
@@ -62,6 +68,13 @@ export default function TrainMarker({ train }: TrainMarkerProps) {
           <div className="mt-2 text-xs text-gray-500">
             Last updated: {train.status.lastUpdated}
           </div>
+          
+          <button 
+            onClick={() => onTrainSelect(train)}
+            className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-sm transition-colors"
+          >
+            {isSelected ? 'Hide Station List' : 'View Details & Stations'}
+          </button>
         </div>
       </Popup>
     </Marker>

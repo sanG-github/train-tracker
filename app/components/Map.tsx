@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { GERMAN_CITIES, MAP_CENTER, MAP_ZOOM, Train } from '../types/map';
 import TrainMarker from './TrainMarker';
-import CityMarker from './CityMarker';
+import StationList from './StationList';
 import { mockTrains, generateMockTrains } from '../data/mockTrains';
 
 // Fix for default marker icons in Next.js
@@ -24,11 +24,22 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function Map() {
   const [trains, setTrains] = useState<Train[]>(mockTrains);
+  const [selectedTrain, setSelectedTrain] = useState<Train | null>(null);
 
   const refreshTrains = () => {
     // Generate new mock train data
     setTrains(generateMockTrains());
+    // Clear selected train when refreshing
+    setSelectedTrain(null);
   };
+
+  const handleTrainSelect = useCallback((train: Train) => {
+    setSelectedTrain(prev => prev?.id === train.id ? null : train);
+  }, []);
+
+  const handleCloseSidebar = useCallback(() => {
+    setSelectedTrain(null);
+  }, []);
 
   useEffect(() => {
     // This is needed for the map to render properly in Next.js
@@ -42,7 +53,14 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="w-full h-[80vh] relative">
+    <div className="w-full h-[80vh] relative flex">
+      {/* Station list sidebar */}
+      {selectedTrain && (
+        <div className="absolute top-0 left-0 h-full z-[1001] p-4">
+          <StationList train={selectedTrain} onClose={handleCloseSidebar} />
+        </div>
+      )}
+      
       <div className="absolute top-4 right-4 z-[1000]">
         <button
           onClick={refreshTrains}
@@ -61,12 +79,17 @@ export default function Map() {
         className="w-full h-full"
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {/* Train markers */}
         {trains.map(train => (
-          <TrainMarker key={train.id} train={train} />
+          <TrainMarker 
+            key={train.id} 
+            train={train} 
+            onTrainSelect={handleTrainSelect}
+            isSelected={selectedTrain?.id === train.id}
+          />
         ))}
       </MapContainer>
       

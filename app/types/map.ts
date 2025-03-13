@@ -14,6 +14,17 @@ export interface Train {
   };
   destination: string;
   scheduledDeparture: string;
+  stations?: Station[];
+}
+
+export interface Station {
+  id: string;
+  name: string;
+  coordinates: [number, number];
+  arrivalTime: string;
+  departureTime: string;
+  platform: string;
+  isPassed: boolean;
 }
 
 export const GERMAN_CITIES: Record<string, [number, number]> = {
@@ -25,5 +36,5 @@ export const GERMAN_CITIES: Record<string, [number, number]> = {
   Erfurt: [11.029880, 50.978650]
 };
 
-export const MAP_CENTER: [number, number] = [51.1657, 10.4515]; // Center of Germany
+export const MAP_CENTER: [number, number] = [52.1657, 10.4515]; // Center of Germany
 export const MAP_ZOOM = 6; 
